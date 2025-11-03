@@ -2,4 +2,7 @@
 
 const chromiumLocation = require('./module')
 
-console.log(chromiumLocation())
+const argv = process.argv.slice(2)
+const allowFallback = argv.includes('--fallback') || argv.includes('-f')
+
+console.log(chromiumLocation(allowFallback))

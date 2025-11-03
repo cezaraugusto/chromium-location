@@ -1,13 +1,16 @@
 const which = require('which');
 
-module.exports = function scanUnknownPlatform () {
-  let browserPath = null
+module.exports = function scanUnknownPlatform (allowFallback = false) {
+  const stable = ['chromium']
+  const fallbacks = ['chromium-browser', 'chromium-freeworld']
+  const candidates = allowFallback ? [...stable, ...fallbacks] : stable
 
-  try {
-    browserPath = which.sync('chromium-browser');
-  } catch (err) {
-    browserPath = null;
+  for (const cmd of candidates) {
+    try {
+      const resolved = which.sync(cmd);
+      if (resolved) return resolved;
+    } catch (_) {}
   }
 
-  return browserPath
+  return null
 }
