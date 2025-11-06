@@ -11,9 +11,15 @@
 
 <img alt="Chromium" align="right" src="https://cdn.jsdelivr.net/gh/extension-js/media@9ef31f005a0192907d9f6405838e43776aca2124/browser_logos/svg/chromium.svg" width="10.5%" />
 
-* By default checks only `stable`.
-* Supports macOS / Windows / Linux
-* CommonJS module and CLI
+- By default checks only `stable`.
+- Supports macOS / Windows / Linux
+- Works both as an ES module or CommonJS
+
+New in this version:
+
+- Honors environment overrides: `CHROMIUM_BINARY`, `CHROME_BINARY`
+- Optional helper to throw with a friendly install guide when nothing is found
+- After you run `npx @puppeteer/browsers install chromium` once, we auto-detect Chromium from Puppeteer's cache on all platforms (no env vars needed)
 
 ## Support table
 
@@ -71,7 +77,10 @@ Returns the first existing path found (given selected channels), or <code>null</
 
 ```js
 // Returns the path to Chromium as a string.
-const chromiumLocation = require('chromium-location')
+import chromiumLocation, {
+  locateChromiumOrExplain,
+  getInstallGuidance
+} from 'chromium-location'
 
 // Strict (Stable only)
 console.log(chromiumLocation())
@@ -79,24 +88,76 @@ console.log(chromiumLocation())
 
 // Enable fallback (Stable / alternative binaries on Linux)
 console.log(chromiumLocation(true))
+
+// Throw with a friendly, copy-pasteable guide when not found
+try {
+  const path = locateChromiumOrExplain({allowFallback: true})
+  console.log(path)
+} catch (e) {
+  console.error(String(e))
+  // Or print getInstallGuidance() explicitly
+}
 ```
 
 **Via CLI:**
 
 ```bash
 npx chromium-location
+
+# Respect Puppeteer cache (after you install once):
+npx @puppeteer/browsers install chromium
+npx chromium-location
+
+# Respect environment overrides
+CHROMIUM_BINARY=/custom/path/to/chromium npx chromium-location
 ```
+
+### Environment overrides
+
+If any of these environment variables are set and point to an existing binary, they take precedence:
+
+- `CHROMIUM_BINARY`
+- `CHROME_BINARY`
+
+### When nothing is found
+
+The helper returns actionable guidance:
+
+```
+We couldn't find a Chromium browser on this machine.
+
+Here's the fastest way to get set up:
+
+1) Install Chromium via Puppeteer Browsers (recommended)
+   npx @puppeteer/browsers install chromium
+
+Then re-run your command — we'll detect it automatically.
+
+Alternatively, install Chromium using your OS package manager and re-run.
+```
+
+## API
+
+- `default export locateChromium(allowFallback?: boolean): string | null`
+  - Returns the first existing path among the selected channels or `null`.
+  - When `allowFallback` is `true`, checks the stable locations and common alternatives per-platform.
+
+- `locateChromiumOrExplain(options?: boolean | { allowFallback?: boolean }): string`
+  - Returns a path if found, otherwise throws an `Error` with a friendly installation guide.
+
+- `getInstallGuidance(): string`
+  - Returns the same guidance text used by `locateChromiumOrExplain()`.
 
 ## Related projects
 
-* [brave-location](https://github.com/cezaraugusto/brave-location)
-* [chrome-location2](https://github.com/cezaraugusto/chrome-location2)
-* [edge-location](https://github.com/cezaraugusto/edge-location)
-* [firefox-location2](https://github.com/cezaraugusto/firefox-location2)
-* [opera-location2](https://github.com/cezaraugusto/opera-location2)
-* [vivaldi-location2](https://github.com/cezaraugusto/vivaldi-location2)
-* [yandex-location](https://github.com/cezaraugusto/yandex-location)
-* [waterfox-location](https://github.com/cezaraugusto/waterfox-location)
+- [brave-location](https://github.com/cezaraugusto/brave-location)
+- [chrome-location2](https://github.com/cezaraugusto/chrome-location2)
+- [edge-location](https://github.com/cezaraugusto/edge-location)
+- [firefox-location2](https://github.com/cezaraugusto/firefox-location2)
+- [opera-location2](https://github.com/cezaraugusto/opera-location2)
+- [vivaldi-location2](https://github.com/cezaraugusto/vivaldi-location2)
+- [yandex-location](https://github.com/cezaraugusto/yandex-location)
+- [waterfox-location](https://github.com/cezaraugusto/waterfox-location)
 
 ## Acknowledgements
 
