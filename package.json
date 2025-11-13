@@ -39,9 +39,7 @@
     "prepublishOnly": "npm run build",
     "publish:provenance": "np patch --no-tests --any-branch --yolo --message 'release: %s' --provenance"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "keywords": [
     "chrome",
     "chromium",
