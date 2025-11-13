@@ -5,11 +5,11 @@
     "url": "https://github.com/cezaraugusto/chromium-location.git"
   },
   "engines": {
-    "node": ">=18 <23"
+    "node": ">=16"
   },
-  "engineStrict": true,
+  "engineStrict": false,
   "bin": {
-    "chromium-location": "dist/index.cjs"
+    "chromium-location": "bin.cjs"
   },
   "name": "chromium-location",
   "version": "1.2.1",
@@ -35,13 +35,12 @@
     "dev": "rslib build --watch",
     "format": "pnpm dlx @biomejs/biome@1.9.4 format --write",
     "check": "pnpm dlx @biomejs/biome@1.9.4 check --write",
+    "pretest": "npm run build",
     "test": "vitest run --pool forks --poolOptions.forks.singleFork --poolOptions.forks.isolate=false",
     "prepublishOnly": "npm run build",
     "publish:provenance": "np patch --no-tests --any-branch --yolo --message 'release: %s' --provenance"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "keywords": [
     "chrome",
     "chromium",
