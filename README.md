@@ -20,6 +20,7 @@ New in this version:
 - Honors environment overrides: `CHROMIUM_BINARY`, `CHROME_BINARY`
 - Optional helper to throw with a friendly install guide when nothing is found
 - After you run `npx @puppeteer/browsers install chromium` once, we auto-detect Chromium from Puppeteer's cache on all platforms (no env vars needed)
+- Cross-platform version API that does not execute the browser by default
 
 ## Support table
 
@@ -79,7 +80,8 @@ Returns the first existing path found (given selected channels), or <code>null</
 // Returns the path to Chromium as a string.
 import chromiumLocation, {
   locateChromiumOrExplain,
-  getInstallGuidance
+  getInstallGuidance,
+  getChromiumVersion
 } from 'chromium-location'
 
 // Strict (Stable only)
@@ -93,6 +95,14 @@ console.log(chromiumLocation(true))
 try {
   const path = locateChromiumOrExplain({allowFallback: true})
   console.log(path)
+
+  // Cross-platform version (no exec by default)
+  const v = getChromiumVersion(path)
+  console.log(v) // e.g. "120.0.6099.109" or null
+
+  // Opt-in: allow executing the binary to fetch version on platforms without metadata (e.g. Linux)
+  const v2 = getChromiumVersion(path, {allowExec: true})
+  console.log(v2)
 } catch (e) {
   console.error(String(e))
   // Or print getInstallGuidance() explicitly
@@ -144,6 +154,12 @@ Alternatively, install Chromium using your OS package manager and re-run.
 
 - `locateChromiumOrExplain(options?: boolean | { allowFallback?: boolean }): string`
   - Returns a path if found, otherwise throws an `Error` with a friendly installation guide.
+
+- `getChromiumVersion(bin: string, opts?: { allowExec?: boolean }): string | null`
+  - Cross-platform version resolver that does not execute the browser by default.
+  - Windows: reads PE file metadata via PowerShell (no GUI spawn).
+  - macOS: reads `Info.plist` (no GUI spawn).
+  - Linux/other: attempts to infer from Puppeteer cache path; otherwise returns `null` unless `allowExec` is `true`.
 
 - `getInstallGuidance(): string`
   - Returns the same guidance text used by `locateChromiumOrExplain()`.
