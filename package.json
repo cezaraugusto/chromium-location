@@ -12,7 +12,7 @@
     "chromium-location": "dist/index.cjs"
   },
   "name": "chromium-location",
-  "version": "1.2.2",
+  "version": "1.2.0",
   "description": "Approximates the current location of the Chromium browser across platforms.",
   "homepage": "https://www.npmjs.com/package/chromium-location",
   "type": "module",
