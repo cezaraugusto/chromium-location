@@ -12,7 +12,7 @@
     "chromium-location": "bin.cjs"
   },
   "name": "chromium-location",
-  "version": "1.2.1",
+  "version": "1.2.3",
   "description": "Approximates the current location of the Chromium browser across platforms.",
   "homepage": "https://www.npmjs.com/package/chromium-location",
   "type": "module",
@@ -40,7 +40,9 @@
     "prepublishOnly": "npm run build",
     "publish:provenance": "np patch --no-tests --any-branch --yolo --message 'release: %s' --provenance"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "chrome",
     "chromium",
