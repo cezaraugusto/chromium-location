@@ -1,10 +1,10 @@
-import scanOsxPath from "./scan/scan-osx-path";
-import scanWindowsPath from "./scan/scan-windows-path";
-import scanUnknownPlatformPath from "./scan/scan-unknown-platform-path";
 import { execFileSync } from "child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { resolveFromPuppeteerCache } from "./resolve-puppeteer-cache";
+import scanOsxPath from "./scan/scan-osx-path";
+import scanUnknownPlatformPath from "./scan/scan-unknown-platform-path";
+import scanWindowsPath from "./scan/scan-windows-path";
 
 export type FsLike = Pick<typeof fs, "existsSync" | "readdirSync">;
 export type WhichLike = { sync: (cmd: string) => string };
@@ -211,47 +211,4 @@ function resolveFromPuppeteerBrowsersCLI(): string | null {
     } catch {}
   }
   return null;
-}
-
-// CLI execution guard (CJS)
-declare const require: any;
-declare const module: any;
-
-if (
-  typeof require !== "undefined" &&
-  typeof module !== "undefined" &&
-  require.main === module
-) {
-  const argv = process.argv.slice(2);
-  const allowFallback = argv.includes("--fallback") || argv.includes("-f");
-  const printBrowserVersion =
-    argv.includes("--chromium-version") || argv.includes("--browser-version");
-  const allowExec = argv.includes("--allow-exec");
-
-  try {
-    const location = locateChromium(allowFallback) || locateChromium(true);
-    if (!location) {
-      // eslint-disable-next-line no-console
-      console.error(getInstallGuidance());
-      process.exit(1);
-    }
-    if (printBrowserVersion) {
-      const v = getChromiumVersion(location, { allowExec });
-      if (!v) {
-        // eslint-disable-next-line no-console
-        console.log("");
-        process.exit(2);
-      }
-      // eslint-disable-next-line no-console
-      console.log(v);
-      process.exit(0);
-    }
-    // eslint-disable-next-line no-console
-    console.log(location);
-    process.exit(0);
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(String((e as any)?.message || e));
-    process.exit(1);
-  }
 }

@@ -1,12 +1,11 @@
 import fs from "node:fs";
-import userhome from "userhome";
+import os from "node:os";
+import path from "node:path";
 
-export default function scanOsxPath(
-  allowFallback: boolean = false,
-): string | null {
+export default function scanOsxPath(allowFallback = false): string | null {
   const apps = [{ app: "Chromium.app", exec: "Chromium" }];
   const systemBase = "/Applications";
-  const userBase = userhome("Applications");
+  const userBase = path.join(os.homedir(), "Applications");
 
   const channels = allowFallback ? apps : [apps[0]];
 

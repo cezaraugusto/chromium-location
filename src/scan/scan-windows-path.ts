@@ -1,9 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-export default function scanWindowsPath(
-  allowFallback: boolean = false,
-): string | null {
+export default function scanWindowsPath(allowFallback = false): string | null {
   const prefixes = [
     process.env.LOCALAPPDATA,
     process.env.PROGRAMFILES,
