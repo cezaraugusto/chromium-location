@@ -1,7 +1,7 @@
 import { sync as whichSync } from "which";
 
 export default function scanUnknownPlatformPath(
-  allowFallback: boolean = false,
+  allowFallback = false,
 ): string | null {
   const stable = ["chromium"];
   const fallbacks = ["chromium-browser", "chromium-freeworld"];

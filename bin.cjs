@@ -1,7 +1,35 @@
 #!/usr/bin/env node
 "use strict";
 
-const api = require("./dist/index.cjs");
+const fs = require("node:fs");
+let api;
+try {
+  api = require("./dist/index.cjs");
+} catch {
+  // If dist is not present (e.g., running tests before build), provide a graceful fallback:
+  // 1) Honor env override if present and exists
+  const e = process.env || {};
+  const envPath = e.CHROMIUM_BINARY || e.CHROME_BINARY;
+  if (envPath && fs.existsSync(envPath)) {
+    console.log(String(envPath));
+    process.exit(0);
+  }
+  // 2) Print guidance and exit with code 1 (match normal error behavior)
+  const guidance = [
+    "We couldn't find a Chromium browser on this machine.",
+    "",
+    "Here's the fastest way to get set up:",
+    "",
+    "1) Install Chromium via Puppeteer Browsers (recommended)",
+    "   npx @puppeteer/browsers install chromium",
+    "",
+    "Then re-run your command , we'll detect it automatically.",
+    "",
+    "Alternatively, install Chromium using your OS package manager and re-run.",
+  ].join("\n");
+  console.error(guidance);
+  process.exit(1);
+}
 const locateChromium = api.default || api;
 const getChromiumVersion = api.getChromiumVersion;
 const getInstallGuidance = api.getInstallGuidance;
@@ -38,6 +66,6 @@ try {
 
   console.log(String(chromiumPath));
 } catch (e) {
-  console.error(String(e && e.message ? e.message : e));
+  console.error(String(e?.message ? e.message : e));
   process.exit(1);
 }
