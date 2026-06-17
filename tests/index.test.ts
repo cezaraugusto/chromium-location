@@ -1,9 +1,11 @@
-import { describe, expect, test } from "vitest";
-import chromiumLocation from "../src/index";
+import {describe, expect, test} from 'vitest'
 
-describe("chromium-location module", () => {
-  test("returns a string or null without forcing fallbacks", () => {
-    const result = chromiumLocation();
-    expect(typeof result === "string" || result === null).toBe(true);
-  });
-});
+import chromiumLocation from '../src/index'
+
+describe('chromium-location module', () => {
+  test('returns a string or null without forcing fallbacks', () => {
+    const result = chromiumLocation()
+
+    expect(typeof result === 'string' || result === null).toBe(true)
+  })
+})
