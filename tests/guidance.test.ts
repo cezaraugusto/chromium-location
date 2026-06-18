@@ -14,7 +14,7 @@ describe('install guidance and error helper (chromium)', () => {
     vi.restoreAllMocks()
   })
 
-  test('getInstallGuidance references Puppeteer chromium install', async () => {
+  it('getInstallGuidance references Puppeteer chromium install', async () => {
     const mod = await import('../src/index')
     const msg = mod.getInstallGuidance()
 
@@ -23,7 +23,7 @@ describe('install guidance and error helper (chromium)', () => {
     expect(msg).not.toMatch(/CHROME_FOR_TESTING_PATH/)
   })
 
-  test('locateChromiumOrExplain throws with guidance when nothing found (darwin)', async () => {
+  it('locateChromiumOrExplain throws with guidance when nothing found (darwin)', async () => {
     Object.defineProperty(process, 'platform', {value: 'darwin'})
     vi.doMock('../src/scan/scan-osx-path', () => ({default: () => null}))
     vi.doMock('../src/resolve-puppeteer-cache', () => ({
