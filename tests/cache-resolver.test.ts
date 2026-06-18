@@ -20,7 +20,7 @@ const makeFs = (entries: Record<string, 'file' | 'dir'>) => {
 }
 
 describe('resolveFromPuppeteerCache (chromium)', () => {
-  test('macOS resolves Chromium binary from mac-* folders', () => {
+  it('macOS resolves Chromium binary from mac-* folders', () => {
     const home = '/Users/alice'
     const base = `${home}/Library/Caches/puppeteer/chromium/mac-123`
     const bin = `${base}/chrome-mac/Chromium.app/Contents/MacOS/Chromium`
@@ -39,7 +39,7 @@ describe('resolveFromPuppeteerCache (chromium)', () => {
     expect(out).toBe(bin)
   })
 
-  test('Linux resolves Chromium binary from linux-* folders', () => {
+  it('Linux resolves Chromium binary from linux-* folders', () => {
     const home = '/home/alice'
     const base = `${home}/.cache/puppeteer/chromium/linux-123`
     const bin = `${base}/chrome-linux64/chrome`
@@ -58,7 +58,7 @@ describe('resolveFromPuppeteerCache (chromium)', () => {
     expect(out).toBe(bin)
   })
 
-  test('Windows resolves Chromium binary (win64 preferred)', () => {
+  it('Windows resolves Chromium binary (win64 preferred)', () => {
     const lad = 'C:/Users/Alice/AppData/Local'
     const base = `${lad}/puppeteer/chromium`
     const bin64 = `${base}/win64-123/chrome-win64/chrome.exe`
