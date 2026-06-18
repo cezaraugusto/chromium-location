@@ -14,6 +14,7 @@ export function resolveFromPuppeteerCache (deps?: {
   const f: FsLike = deps?.fs ?? fs
   const env: EnvLike = deps?.env ?? process.env
   const platform: NodeJS.Platform = deps?.platform ?? process.platform
+  const p = platform === 'win32' ? path.win32 : path.posix
 
   try {
     if (platform === 'darwin') {
@@ -22,15 +23,15 @@ export function resolveFromPuppeteerCache (deps?: {
 
       if (home) {
         bases.push(
-          path.join(home, 'Library', 'Caches', 'puppeteer', 'chromium')
+          p.join(home, 'Library', 'Caches', 'puppeteer', 'chromium')
         )
       }
 
       if (env.PUPPETEER_CACHE_DIR) bases.push(env.PUPPETEER_CACHE_DIR)
 
-      bases.push(path.join(process.cwd(), 'chromium'))
+      bases.push(p.join(process.cwd(), 'chromium'))
       bases.push(
-        path.join(process.cwd(), 'dist', 'extension-js', 'chromium-binary')
+        p.join(process.cwd(), 'dist', 'extension-js', 'chromium-binary')
       )
 
       for (const base of bases) {
@@ -45,7 +46,7 @@ export function resolveFromPuppeteerCache (deps?: {
 
         for (const d of dirs) {
           candidates.push(
-            path.join(
+            p.join(
               base,
               d,
               'chrome-mac',
@@ -56,7 +57,7 @@ export function resolveFromPuppeteerCache (deps?: {
             )
           )
           candidates.push(
-            path.join(
+            p.join(
               base,
               d,
               'chrome-mac-arm64',
@@ -67,7 +68,7 @@ export function resolveFromPuppeteerCache (deps?: {
             )
           )
           candidates.push(
-            path.join(base, d, 'Chromium.app', 'Contents', 'MacOS', 'Chromium')
+            p.join(base, d, 'Chromium.app', 'Contents', 'MacOS', 'Chromium')
           )
         }
 
@@ -84,7 +85,7 @@ export function resolveFromPuppeteerCache (deps?: {
 
       if (!lad) return null
 
-      const base = path.join(lad, 'puppeteer', 'chromium')
+      const base = p.join(lad, 'puppeteer', 'chromium')
       const dirs = listDirs(f, base)
       const ordered = [
         ...dirs.filter((d) => d.startsWith('win64-')),
@@ -94,9 +95,9 @@ export function resolveFromPuppeteerCache (deps?: {
       const candidates: string[] = []
 
       for (const d of ordered) {
-        candidates.push(path.join(base, d, 'chrome-win64', 'chrome.exe'))
-        candidates.push(path.join(base, d, 'chrome-win32', 'chrome.exe'))
-        candidates.push(path.join(base, d, 'chrome.exe'))
+        candidates.push(p.join(base, d, 'chrome-win64', 'chrome.exe'))
+        candidates.push(p.join(base, d, 'chrome-win32', 'chrome.exe'))
+        candidates.push(p.join(base, d, 'chrome.exe'))
       }
 
       return firstExisting(f, candidates)
@@ -105,12 +106,12 @@ export function resolveFromPuppeteerCache (deps?: {
     // Linux and others
     const xdg = env.XDG_CACHE_HOME
     const home = deps?.homeDir ?? env.HOME ?? ''
-    const cacheBase = xdg || (home ? path.join(home, '.cache') : undefined)
+    const cacheBase = xdg || (home ? p.join(home, '.cache') : undefined)
     const bases = [
-      ...(cacheBase ? [path.join(cacheBase, 'puppeteer', 'chromium')] : []),
+      ...(cacheBase ? [p.join(cacheBase, 'puppeteer', 'chromium')] : []),
       env.PUPPETEER_CACHE_DIR || '',
-      path.join(process.cwd(), 'chromium'),
-      path.join(process.cwd(), 'dist', 'extension-js', 'chromium-binary')
+      p.join(process.cwd(), 'chromium'),
+      p.join(process.cwd(), 'dist', 'extension-js', 'chromium-binary')
     ].filter(Boolean) as string[]
 
     for (const base of bases) {
@@ -118,10 +119,10 @@ export function resolveFromPuppeteerCache (deps?: {
       const candidates: string[] = []
 
       for (const d of dirs) {
-        candidates.push(path.join(base, d, 'chrome-linux64', 'chrome'))
-        candidates.push(path.join(base, d, 'chrome-linux', 'chrome'))
-        candidates.push(path.join(base, d, 'chromium'))
-        candidates.push(path.join(base, d, 'chrome'))
+        candidates.push(p.join(base, d, 'chrome-linux64', 'chrome'))
+        candidates.push(p.join(base, d, 'chrome-linux', 'chrome'))
+        candidates.push(p.join(base, d, 'chromium'))
+        candidates.push(p.join(base, d, 'chrome'))
       }
 
       const hit = firstExisting(f, candidates)
