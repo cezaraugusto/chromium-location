@@ -130,7 +130,7 @@ If any of these environment variables are set and point to an existing binary, t
 
 ### When nothing is found
 
-The helper returns actionable guidance:
+When nothing is found, the helper throws with this message:
 
 ```
 We couldn't find a Chromium browser on this machine.
