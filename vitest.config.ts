@@ -4,14 +4,8 @@ export default defineConfig({
   test: {
     globals: true,
     pool: 'forks',
-    poolOptions: {
-      forks: {
-        singleFork: true,
-        isolate: false
-      }
-    },
+    isolate: false,
     fileParallelism: false,
-    maxWorkers: 1,
-    minWorkers: 1
+    maxWorkers: 1
   }
 })
