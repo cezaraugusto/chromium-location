@@ -75,7 +75,7 @@ export function getInstallGuidance (): string {
     '1) Install Chromium via Puppeteer Browsers (recommended)',
     '   npx @puppeteer/browsers install chromium',
     '',
-    "Then re-run your command , we'll detect it automatically.",
+    "Then re-run your command, and we'll detect it automatically.",
     '',
     'Alternatively, install Chromium using your OS package manager and re-run.'
   ].join('\n')
