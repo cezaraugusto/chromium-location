@@ -90,7 +90,7 @@ console.log(chromiumLocation())
 // Enable fallback (Stable / alternative binaries on Linux)
 console.log(chromiumLocation(true))
 
-// Throw with a friendly, copy-pasteable guide when not found
+// Throw with an install guide when not found
 try {
   const path = locateChromiumOrExplain({allowFallback: true})
   console.log(path)
@@ -135,12 +135,12 @@ The helper returns actionable guidance:
 ```
 We couldn't find a Chromium browser on this machine.
 
-Here's the fastest way to get set up:
+To install one:
 
 1) Install Chromium via Puppeteer Browsers (recommended)
    npx @puppeteer/browsers install chromium
 
-Then re-run your command, and we'll detect it automatically.
+Re-run your command afterward and it will be detected automatically.
 
 Alternatively, install Chromium using your OS package manager and re-run.
 ```
