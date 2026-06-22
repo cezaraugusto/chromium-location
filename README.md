@@ -15,12 +15,11 @@
 - Supports macOS / Windows / Linux
 - Works both as an ES module or CommonJS
 
-New in this version:
+## Installation
 
-- Honors environment overrides: `CHROMIUM_BINARY`, `CHROME_BINARY`
-- Optional helper to throw with a friendly install guide when nothing is found
-- After you run `npx @puppeteer/browsers install chromium` once, we auto-detect Chromium from Puppeteer's cache on all platforms (no env vars needed)
-- Cross-platform version API that does not execute the browser by default
+```bash
+npm i chromium-location
+```
 
 ## Support table
 
@@ -141,7 +140,7 @@ Here's the fastest way to get set up:
 1) Install Chromium via Puppeteer Browsers (recommended)
    npx @puppeteer/browsers install chromium
 
-Then re-run your command , we'll detect it automatically.
+Then re-run your command, and we'll detect it automatically.
 
 Alternatively, install Chromium using your OS package manager and re-run.
 ```
@@ -170,10 +169,12 @@ Alternatively, install Chromium using your OS package manager and re-run.
 - [chrome-location2](https://github.com/cezaraugusto/chrome-location2)
 - [edge-location](https://github.com/cezaraugusto/edge-location)
 - [firefox-location2](https://github.com/cezaraugusto/firefox-location2)
+- [safari-location2](https://github.com/cezaraugusto/safari-location2)
 - [opera-location2](https://github.com/cezaraugusto/opera-location2)
 - [vivaldi-location2](https://github.com/cezaraugusto/vivaldi-location2)
-- [yandex-location](https://github.com/cezaraugusto/yandex-location)
 - [waterfox-location](https://github.com/cezaraugusto/waterfox-location)
+- [librewolf-location](https://github.com/cezaraugusto/librewolf-location)
+- [yandex-location](https://github.com/cezaraugusto/yandex-location)
 
 ## Acknowledgements
 
