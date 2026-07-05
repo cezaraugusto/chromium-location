@@ -1,4 +1,9 @@
-import {sync as whichSync} from 'which'
+// Default import: `which` ships as CommonJS (v4 through v7), so a named ESM
+// import of `sync` breaks under Node ESM when the host resolves a version
+// without an exports map. The default export interops everywhere.
+import which from 'which'
+
+const whichSync = which.sync
 
 export default function scanUnknownPlatformPath (
   allowFallback = false
