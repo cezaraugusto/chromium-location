@@ -66,19 +66,51 @@ export default function locateChromium (
   return found
 }
 
-export function getInstallGuidance (): string {
-  return [
+export type InstallGuidanceStep = {
+  summary: string;
+  command: string;
+}
+
+export type InstallGuidanceOptions = {
+  // Caller-provided install steps replacing the default Puppeteer hint.
+  // Tools that manage their own browser cache (and can satisfy a chromium
+  // target with any chromium-family binary) pass their own installer
+  // commands here; with no steps the default Puppeteer guidance is kept.
+  steps?: InstallGuidanceStep[];
+}
+
+const DEFAULT_INSTALL_STEPS: InstallGuidanceStep[] = [
+  {
+    summary: 'Install Chromium via Puppeteer Browsers (recommended)',
+    command: 'npx @puppeteer/browsers install chromium'
+  }
+]
+
+export function getInstallGuidance (opts?: InstallGuidanceOptions): string {
+  const steps = opts?.steps?.length ? opts.steps : DEFAULT_INSTALL_STEPS
+
+  const lines = [
     "We couldn't find a Chromium browser on this machine.",
     '',
     'To install one:',
-    '',
-    '1) Install Chromium via Puppeteer Browsers (recommended)',
-    '   npx @puppeteer/browsers install chromium',
-    '',
-    'Re-run your command afterward and it will be detected automatically.',
-    '',
+    ''
+  ]
+
+  steps.forEach((step, index) => {
+    lines.push(`${index + 1}) ${step.summary}`)
+    lines.push(`   ${step.command}`)
+    lines.push('')
+  })
+
+  lines.push(
+    'Re-run your command afterward and it will be detected automatically.'
+  )
+  lines.push('')
+  lines.push(
     'Alternatively, install Chromium using your OS package manager and re-run.'
-  ].join('\n')
+  )
+
+  return lines.join('\n')
 }
 
 export function locateChromiumOrExplain (
