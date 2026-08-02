@@ -53,7 +53,7 @@
   ],
   "dependencies": {
     "userhome": "^1.0.1",
-    "which": "^7.0.0"
+    "which": "^6.0.1"
   },
   "devDependencies": {
     "@rslib/core": "^0.23.2",
